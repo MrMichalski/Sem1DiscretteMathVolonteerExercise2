@@ -1,4 +1,7 @@
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Objects;
 
 public class ENumber {
     private BigInteger number;
@@ -6,6 +9,11 @@ public class ENumber {
     public ENumber(String val) {
         this.number = new BigInteger(val);
     }
+
+    public ENumber(ENumber eNumber) {
+        this.number = eNumber.getNumber();
+    }
+
 
 
 
@@ -55,7 +63,7 @@ public class ENumber {
         BigInteger numBigInteger = new BigInteger(String.valueOf(num));
         BigInteger zeroBigInteger = new BigInteger("0");
 
-        for (int i = 0; i < 10_000_000; i++) {
+        for (int i = 0; i < 100000; i++) {
             if(find.getNumber().remainder(numBigInteger).compareTo(zeroBigInteger) != 0) {
                 find.increment();
             } else {
@@ -69,13 +77,25 @@ public class ENumber {
         return number;
     }
 
-    public int getIntVal() {
-        return number.intValue();
-    }
-
     @Override
     public String toString() {
         return number.toString();
     }
 
+    public boolean equals(ENumber eNumber) {
+        return Objects.equals(number, eNumber.number);
+    }
+
+    ArrayList<Integer> findNumbersThatThisENumberMayRepresent() {//This method was used for testing purposes
+        BigInteger bigIntegerOf0 = new BigInteger("0");
+        BigInteger bigIntegerOf1 = new BigInteger("1");
+        BigInteger bigInteger = new BigInteger("150000");
+        return MyMath.findDivisors(this.getNumber(), bigIntegerOf0, bigIntegerOf1, bigInteger);
+    }
+
+    public int compareTo(ENumber eNumber) {
+        if (this.getNumber().compareTo(eNumber.getNumber()) > 0) return 1;
+        if (this.getNumber().compareTo(eNumber.getNumber()) == 0) return 0;
+        return -1;
+    }
 }
